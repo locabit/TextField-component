@@ -24,7 +24,11 @@ const App: React.FC = () => {
       <div className="container">
         <TextField label="Password" type="password" />
         <TextField label="Email" type="email" />
-        <TextField label="Searchfield" type="search" />
+        <TextField
+          label="Searchfield"
+          type="search"
+          placeHolder="search on Google"
+        />
         <TextField label="Helper Text" help="some helper text" />
       </div>
 

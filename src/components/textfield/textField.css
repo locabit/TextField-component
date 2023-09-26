@@ -23,15 +23,34 @@
 /* basic component style */
 
 .componetContainer {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
+  height: 100%;
+  margin: 12px 0;
 }
 
 .label {
   font-size: small;
-  margin-bottom: 2px;
+  margin-bottom: 4px;
+}
+
+.floatingLabel {
+  position: absolute;
+  font-size: 16px;
+  color: var(--dark-grey-color);
+  padding: 0 6px;
+  transform: translateY(10%);
+  pointer-events: none;
+  transition: 0.5s;
+}
+
+.componetContainer:focus-within .floatingLabel {
+  transform: translateY(-125%) translateX(-10%);
+  font-size: small;
+  color: var(--text-color);
 }
 
 .form {
@@ -40,18 +59,17 @@
 }
 
 .form-input {
-  position: relative;
   display: flex;
   align-items: center;
 }
 
 .input {
-  background-color: var(--grey-color);
+  background: transparent;
   border: solid 1px var(--dark-grey-color);
   border-radius: 3px;
   height: 1.4rem;
   color: var(--text-color);
-  padding-left: 0.5rem;
+  padding: 0 6px;
   display: block;
   width: 100%;
 }
@@ -61,6 +79,7 @@
 }
 
 .helper {
+  position: absolute;
   font-size: 9px;
   text-align: left;
   word-break: break-word;
@@ -72,6 +91,28 @@
   font-size: small;
   word-break: break-word;
   white-space: normal;
+}
+
+/* icon style */
+
+.iconLeft {
+  position: absolute;
+  left: 4px;
+  color: var(--dark-grey-color);
+}
+
+.iconRight {
+  position: absolute;
+  right: 4px;
+  color: var(--dark-grey-color);
+}
+
+.inputPaddingIconLeft {
+  padding-left: 25px;
+}
+
+.inputPaddingIconRight {
+  padding-right: 25px;
 }
 
 /* size component style */
@@ -90,15 +131,14 @@
 
 #icon[data-state="small"] {
   font-size: 14px;
-  padding-bottom: 4px;
 }
 
-.inputIconLeft[data-state="small"] {
-  padding-left: 22px;
+.inputPaddingIconLeftSmall {
+  padding-left: 20px;
 }
 
-.inputIconRight[data-state="small"] {
-  padding-right: 22px;
+.inputPaddingIconRightSmall {
+  padding-right: 20px;
 }
 
 /* medium size */
@@ -114,15 +154,15 @@
 }
 
 #icon[data-state="medium"] {
-  font-size: 18px;
+  font-size: 22px;
 }
 
-.inputIconLeft[data-state="medium"] {
-  padding-left: 28px;
+.inputPaddingIconLeftMedium {
+  padding-left: 30px;
 }
 
-.inputIconRight[data-state="medium"] {
-  padding-right: 28px;
+.inputPaddingIconRightMedium {
+  padding-right: 30px;
 }
 
 /* large size */
@@ -138,15 +178,15 @@
 }
 
 #icon[data-state="large"] {
-  font-size: 20px;
+  font-size: 26px;
 }
 
-.IconLeft#icon[data-state="large"] {
-  padding-left: 36px;
+.inputPaddingIconLeftLarge {
+  padding-left: 34px;
 }
 
-.inputIconRight#icon[data-state="large"] {
-  padding-right: 36px;
+.inputPaddingIconRightLarge {
+  padding-right: 34px;
 }
 
 /* attributes componet style */
@@ -173,11 +213,18 @@
 }
 
 .helperInvalidInput {
+  position: absolute;
   color: var(--danger-color);
-  font-size: 9px;
+  font-size: 10px;
+  font-weight: bold;
   text-align: left;
   word-break: break-word;
   white-space: normal;
+  z-index: 999;
+  padding: 4px;
+  margin-top: 2px;
+  border-radius: 3px;
+  background-color: rgba(163, 166, 165, 0.8);
 }
 
 /* border component style */
@@ -286,26 +333,4 @@
 .iconLeft[data-state="danger"],
 .iconRight[data-state="danger"] {
   color: var(--danger-color);
-}
-
-/* icon position */
-
-.iconLeft {
-  position: absolute;
-  left: 6px;
-  color: var(--dark-grey-color);
-}
-
-.iconRight {
-  position: absolute;
-  right: 6px;
-  color: var(--dark-grey-color);
-}
-
-.inputPaddingIconLeft {
-  padding-left: 25px;
-}
-
-.inputPaddingIconRight {
-  padding-right: 25px;
 }

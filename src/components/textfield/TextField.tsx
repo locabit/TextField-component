@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./textField.css";
 
 interface TextFieldProps {
-  label: string;
+  label?: string;
   type?: string;
   size?: "small" | "medium" | "large";
   required?: boolean;
@@ -37,11 +37,30 @@ const TextField: React.FC<TextFieldProps> = ({
 }) => {
   const [value, setValue] = useState("");
   const [invalidInput, setInvalidInput] = useState(false);
+  const [dirty, setDirty] = useState(false);
+  const [helpMessage, setHelpMessage] = useState("");
 
-  // fuction to get className for text field style
+  // function to get className for label style
 
-  const getClassName = () => {
+  const getLabelClassName = () => {
+    const labelClassName = ["label"];
+
+    if (float && !dirty) {
+      labelClassName.push("floatingLabel");
+    }
+
+    if (invalidInput) {
+      labelClassName.push("labelInvalidInput");
+    }
+
+    return labelClassName.join(" ");
+  };
+
+  // function to get className for input style
+
+  const getInputClassName = () => {
     const className = ["input"];
+
     if (size) {
       className.push(size);
     }
@@ -58,8 +77,32 @@ const TextField: React.FC<TextFieldProps> = ({
       className.push("inputPaddingIconLeft");
     }
 
+    if (iconLeft && size) {
+      if (size === "small") {
+        className.push("inputPaddingIconLeftSmall");
+      }
+      if (size === "medium") {
+        className.push("inputPaddingIconLeftMedium");
+      }
+      if (size === "large") {
+        className.push("inputPaddingIconLeftLarge");
+      }
+    }
+
     if (iconRight) {
       className.push("inputPaddingIconRight");
+    }
+
+    if (iconRight && size) {
+      if (size === "small") {
+        className.push("inputPaddingIconRightSmall");
+      }
+      if (size === "medium") {
+        className.push("inputPaddingIconRightMedium");
+      }
+      if (size === "large") {
+        className.push("inputPaddingIconRightLarge");
+      }
     }
 
     if (invalidInput) {
@@ -67,6 +110,16 @@ const TextField: React.FC<TextFieldProps> = ({
     }
 
     return className.join(" ");
+  };
+
+  const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const currentValue = e.currentTarget.value;
+    setValue(currentValue);
+    if (currentValue != "") {
+      setDirty(true);
+    } else {
+      setDirty(false);
+    }
   };
 
   // function to verificate email
@@ -81,9 +134,21 @@ const TextField: React.FC<TextFieldProps> = ({
   const isBlank = () => {
     value === "" ? setInvalidInput(true) : setInvalidInput(false);
   };
+
   // function to verificate password
+
   const validPassword = () => {
-    value.length < 1 ? setInvalidInput(true) : setInvalidInput(false);
+    /^(?=.*[0-9])[a-zA-Z0-9]{8,999}$/.test(value) == true
+      ? setInvalidInput(false)
+      : setInvalidInput(true);
+  };
+
+  // function search
+
+  const searchOnGoogle = () => {
+    if (value.trim() !== "") {
+      window.open(`https://www.google.com/search?q=${value}`, "_blank");
+    }
   };
 
   // function for take value on key press and prevent invalid input in determinated type of component
@@ -94,50 +159,50 @@ const TextField: React.FC<TextFieldProps> = ({
 
       if (required) {
         isBlank();
+        setHelpMessage("required field");
       }
       if (type === "password") {
         validPassword();
+        setHelpMessage(
+          "Password must contain:\n- one number\n- one uppercase letter\n- one lowercase letter\n- at least 8 or more characters"
+        );
       }
       if (type === "email") {
         validEmail();
+        setHelpMessage("insert a valid e-mail\ne.g. email@example.com");
+      }
+      if (type === "search") {
+        searchOnGoogle();
       }
     } else if (e.key === "Tab") {
       if (required) {
         isBlank();
+        setHelpMessage("required field");
       }
       if (type === "password") {
         validPassword();
+        setHelpMessage(
+          "Password must contain:\n- one number\n- one uppercase letter\n- one lowercase letter\n- at least 8 or more characters"
+        );
       }
       if (type === "email") {
         validEmail();
+        setHelpMessage("insert a valid e-mail\ne.g. email@example.com");
       }
     }
   };
 
-  // function to defined the placeHolder
-
-  const getPlaceHolder = () => {
-    float ? (placeHolder = label) : placeHolder;
-    return placeHolder;
-  };
-
   // function to disabled specific field
 
-  const isDisabledFunction = () => {
+  const isInputDisabledOrReadOnly = () => {
     return isDisabled || readOnly ? true : false;
   };
 
   return (
     <div className="componetContainer">
-      {!invalidInput ? (
-        <label className="label" data-state={state}>
-          {label}
-        </label>
-      ) : (
-        <label className="labelInvalidInput" data-state={state}>
-          {label}
-        </label>
-      )}
+      <label className={getLabelClassName()} data-state={state}>
+        {label}
+      </label>
 
       <div className="form" data-state={size}>
         <form className="form-input">
@@ -153,18 +218,27 @@ const TextField: React.FC<TextFieldProps> = ({
           )}
           <input
             type={type}
-            className={getClassName()}
-            disabled={isDisabledFunction()}
+            className={getInputClassName()}
+            disabled={isInputDisabledOrReadOnly()}
             data-state={state}
-            onChange={(e) => setValue(e.target.value)}
+            onChange={(e) => onChangeHandler(e)}
             onKeyDown={(e) => handleKeyDown(e)}
-            placeholder={getPlaceHolder()}
+            placeholder={placeHolder}
+            required={required}
           />
         </form>
 
-        {help && <p className="helper">{help}</p>}
+        {help && (
+          <p className="helper" style={{ whiteSpace: "pre-line" }}>
+            {help}
+          </p>
+        )}
 
-        {invalidInput && <p className="helperInvalidInput">invalid input</p>}
+        {invalidInput && (
+          <p className="helperInvalidInput" style={{ whiteSpace: "pre-line" }}>
+            {helpMessage}
+          </p>
+        )}
 
         {reactiveValue && <p className="reactiveText">{value}</p>}
       </div>
