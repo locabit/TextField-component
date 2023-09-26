@@ -39,7 +39,7 @@
 
 .floatingLabel {
   position: absolute;
-  font-size: 16px;
+  font-size: 14px;
   color: var(--dark-grey-color);
   padding: 0 6px;
   transform: translateY(10%);

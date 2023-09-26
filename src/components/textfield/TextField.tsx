@@ -112,6 +112,8 @@ const TextField: React.FC<TextFieldProps> = ({
     return className.join(" ");
   };
 
+  // function start at onChage event
+
   const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const currentValue = e.currentTarget.value;
     setValue(currentValue);
