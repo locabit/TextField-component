@@ -21,7 +21,7 @@ interface TextFieldProps {
 
 const TextField: React.FC<TextFieldProps> = ({
   label,
-  type,
+  type = "text",
   size,
   required,
   readOnly,
@@ -237,7 +237,7 @@ const TextField: React.FC<TextFieldProps> = ({
         )}
 
         {invalidInput && (
-          <p className="helperInvalidInput" style={{ whiteSpace: "pre-line" }}>
+          <p className="helper" style={{ whiteSpace: "pre-line" }}>
             {helpMessage}
           </p>
         )}

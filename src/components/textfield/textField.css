@@ -79,11 +79,12 @@
 }
 
 .helper {
-  position: absolute;
+  color: var(--text-color);
   font-size: 9px;
   text-align: left;
   word-break: break-word;
   white-space: normal;
+  margin-top: 2px;
 }
 
 .reactiveText {
@@ -210,21 +211,6 @@
 }
 .invalidInput:focus {
   outline: var(--danger-color) solid 2px;
-}
-
-.helperInvalidInput {
-  position: absolute;
-  color: var(--danger-color);
-  font-size: 10px;
-  font-weight: bold;
-  text-align: left;
-  word-break: break-word;
-  white-space: normal;
-  z-index: 999;
-  padding: 4px;
-  margin-top: 2px;
-  border-radius: 3px;
-  background-color: rgba(163, 166, 165, 0.8);
 }
 
 /* border component style */
